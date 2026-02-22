@@ -1,0 +1,1 @@
+"""regdoc_intel package."""
