@@ -24,7 +24,23 @@ Output structure:
 
 The notebook calls shared ingestion logic from `src/regdoc_intel/ingestion/file_ingestor.py` and writes with standard Delta APIs.
 
-## 3) Run Bronze ingestion locally with PySpark
+## 3) Run Silver build notebook in Databricks
+
+1. Import `notebooks/02_silver_build.py` into Databricks.
+2. Set notebook widgets:
+   - `bronze_table` (default: `regdoc_intel.raw.bronze_documents`)
+   - `metadata_csv_path` (e.g., `/dbfs/tmp/regdoc_synthetic/metadata.csv`)
+   - `catalog` (default: `regdoc_intel`)
+   - `schema` (default: `curated`)
+3. Run all cells.
+
+The notebook reads `raw.bronze_documents` and writes the following Delta tables:
+
+- `regdoc_intel.curated.silver_documents`
+- `regdoc_intel.curated.silver_document_pages`
+- `regdoc_intel.curated.silver_document_sections`
+
+## 4) Run Bronze ingestion locally with PySpark
 
 ```bash
 python - <<'PY'
@@ -39,7 +55,7 @@ spark.stop()
 PY
 ```
 
-## 4) Run tests
+## 5) Run tests
 
 ```bash
 pytest -q
